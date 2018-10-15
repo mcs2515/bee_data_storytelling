@@ -1,0 +1,52 @@
+/* MAIN CSS FILE FOR PROJECT */
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    font: 12pt Sans-Serif;
+    line-height: 1.7rem;
+    background: #fecf67;
+}
+
+h1{
+    width: 100%;
+    padding: 10px 0;
+    margin: 0;
+    text-align: center;
+    background: #fecf67;
+    
+}
+
+.chart-div {
+    text-align: center;
+    margin:auto;
+    padding:10px;
+    background: #f1f2f1;
+}
+
+svg {
+    display: block;
+    margin: auto;
+    padding: 20px;
+}
+
+.axis-left1 line, 
+.axis-left1 path {
+    stroke: none;
+}
+
+.axis-left1 text {
+    font-weight: bold;
+    font-size: 7pt;
+    text-transform: uppercase;
+}
+
+.dot-label {
+    font-size: 8pt;
+}
+
+.details{
+	height: 100%;
+	background: #fecf67;
+}
