@@ -1,0 +1,73 @@
+[
+  {
+    "op": "core/row-removal",
+    "description": "Remove rows",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "value",
+          "selectBlank": true,
+          "selection": [],
+          "selectError": false,
+          "invert": false,
+          "name": "nAllNeonic",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "nAllNeonic"
+        }
+      ]
+    }
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column stocks",
+    "columnName": "stocks"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column priceperlb",
+    "columnName": "priceperlb"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column prodvalue",
+    "columnName": "prodvalue"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column Region",
+    "columnName": "Region"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column FIPS",
+    "columnName": "FIPS"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column nCLOTHIANIDIN",
+    "columnName": "nCLOTHIANIDIN"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column nIMIDACLOPRID",
+    "columnName": "nIMIDACLOPRID"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column nTHIAMETHOXAM",
+    "columnName": "nTHIAMETHOXAM"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column nACETAMIPRID",
+    "columnName": "nACETAMIPRID"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column nTHIACLOPRID",
+    "columnName": "nTHIACLOPRID"
+  }
+]

@@ -1,20 +1,10 @@
-/* Assignment 3 
- * 
- * When the chart type dropdown changes, update the chart 
- * by sorting the dataset and re-joining the data to the rects.
- * Update the axes and item positions to smoothly go to their new sizes and
- * positions. You will only need to use the update selection in
- * updateChartType for this exercise. 
-*/
-
-const chartType = document.querySelector('#chartType');
-
 function rowConverter(row) {
   return {
-    app_name: row.app_name,
-    downloads: parseInt(row.downloads),
-    average_rating: parseFloat(row.average_rating),
-    thirty_day_keep: parseFloat(row.thirty_day_keep) / 100
+		stateInitials:row.state,
+		stateName:row.StateName,
+		totalprod: row.totalprod,
+		year: row.year,
+		pesticides: row.nAllNeonic,
   }
 }
 
@@ -22,21 +12,21 @@ let dataset;
 let xScale, yScale;
 let xAxis, yAxis;
 let xAxisGroup, yAxisGroup;
-let chart1;
+let chart;
 let w, h;
 
 let key = (d) => d.app_name;
 
-function makeChart1(dataset) {
-
-   w = 600;
-   h = dataset.length * 24;
-
-  // sort the data by downloads
+function makeChart(dataset) {
+	
+	w = 900;
+	h = 400;
+   
+	// sort the data by downloads
   // uses built-in Array.sort() with comparator function
-  dataset.sort((a,b) => b.downloads - a.downloads);
+  dataset.sort((a,b) => b.pesticides - a.pesticides);
 
-  chart1 = d3.select('#chart1')
+  chart = d3.select('#chart')
     .attr('width', w)
     .attr('height', h);
 
@@ -44,15 +34,11 @@ function makeChart1(dataset) {
   // which is for the 80 pixels on left for axis and 
   // 20 pixels on right for padding
   xScale = d3.scaleLinear()
-    .domain([0, d3.max(dataset, (d) => d.downloads)])
+    .domain([0, d3.max(dataset, (d) => d.totalprod)])
     .rangeRound([0, w - 100]);
 
-  // using scale band to work with nominal values 
-  // the Array.map() call allows us to get a new array
-  // by calling a function on each item of the source array 
-  // here it pulls out the app_name
-  yScale = d3.scaleBand()
-    .domain(dataset.map((d) => d.app_name))
+  yScale = d3.scaleLinear()
+    .domain(dataset.map((d) => d.pesticides))
     .rangeRound([20, h - 20]);
 
   // d3 allows scaling between colors
@@ -60,42 +46,35 @@ function makeChart1(dataset) {
     .domain([4.5, 5])
     .range(['#88d', '#ccf']);
 
-  chart1.selectAll('rect')
+  chart.selectAll('rect')
     .data(dataset, key)
     .enter()
     .append('rect')
-    .attr('x', 80)
-    .attr('y', (d) => yScale(d.app_name))
-    .attr('width', (d) => xScale(d.downloads))
-    .attr('height', 18)
-    .attr('fill', (d) => colorScale(d.average_rating));
+    .attr('x', (d) => xScale(d.totalprod))
+    .attr('y', (d) => yScale(d.pesticides))
+    .attr('width', 18)
+    .attr('height', (d) => xScale(d.totalprod))
+    .attr('fill', (d) => colorScale(d.totalprod));
 
   xAxis = d3.axisBottom(xScale);
   yAxis = d3.axisLeft(yScale)
 
   // AXES
-  xAxisGroup = chart1.append('g')
+  xAxisGroup = chart.append('g')
     .attr('class', 'axis')
     .attr('transform', `translate(80, ${h - 20})`)
     .call(xAxis);
 
-  yAxisGroup = chart1.append('g')
+  yAxisGroup = chart.append('g')
     .attr('class', 'axis-left1')
     .attr('transform', `translate(80,0 )`)
     .call(yAxis);
 }
 
-function updateChartType() {
-  console.log(chartType.value);
-  console.log(chartType.selectedIndex);
+function updateChart() {
 
-	let bars = chart1.selectAll('rect').data(dataset, key);
+	let bars = chart.selectAll('rect').data(dataset, key);
 	
-  // TODO
-  // Depending on chartType.selectedIndex
-  // update the chart by:
-  // 1. re-sort the dataset
-  // 2. update xscale domain 
 	if(chartType.selectedIndex == 0){  //downloads
 		dataset.sort((a,b) => b.downloads - a.downloads);
 		xScale.domain([0, d3.max(dataset, (d) => d.downloads)]);
@@ -134,13 +113,39 @@ function updateChartType() {
 	  .call(yAxis);
 }
 
+function populateSelect(dataset){
+	
+	let state_select = d3.select('#stateSelect');
+	let state_lbl = d3.select('#stateName');
+	
+	//populate dropdown based on unique keys = no duplicates of stateInitials
+	state_select.selectAll("option")
+		.data(d3.map(dataset, function(d){return d.stateInitials;}).keys())
+		.enter()
+		.append("option")
+		.attr("value", function (d) {return d})
+		.text(function (d) {return d});
+	
+
+	
+	state_select.on("change", function (d){
+		var value = d3.select(this).property("value");
+		
+		//set the state_lbl to full state name
+		
+		//pass value to year, pesticide, and totalprod
+		//updateChart()
+		console.log("selection changed: " + value);
+	});
+}
 
 window.onload = function () {
-  d3.csv('fake_app_download_rating.csv', rowConverter)
+  d3.csv('HoneyNeonic.csv', rowConverter)
     .then((d) => {
       dataset = d;
-      makeChart1(dataset);
+			populateSelect(dataset);
+      makeChart(dataset);
     });
 
-  chartType.addEventListener("change", updateChartType);
+  //stateSelect.addEventListener("change", updateChart);
 }
