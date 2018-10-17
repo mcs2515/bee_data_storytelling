@@ -24,7 +24,7 @@ function makeChart(dataset) {
    
 	// sort the data by downloads
   // uses built-in Array.sort() with comparator function
-  dataset.sort((a,b) => b.pesticides - a.pesticides);
+  //dataset.sort((a,b) => b.pesticides - a.pesticides);
 
   chart = d3.select('#chart')
     .attr('width', w)
@@ -35,11 +35,11 @@ function makeChart(dataset) {
   // 20 pixels on right for padding
   xScale = d3.scaleLinear()
     .domain([0, d3.max(dataset, (d) => d.totalprod)])
-    .rangeRound([0, w - 100]);
+    .rangeRound([20, w - 20]);
 
   yScale = d3.scaleLinear()
-    .domain(dataset.map((d) => d.pesticides))
-    .rangeRound([20, h - 20]);
+    .domain([d3.min(dataset, (d) => d.pesticides),d3.max(dataset, (d) => d.pesticides)])
+    .rangeRound([h-20, 20]);
 
   // d3 allows scaling between colors
   let colorScale = d3.scaleLinear()
@@ -50,10 +50,10 @@ function makeChart(dataset) {
     .data(dataset, key)
     .enter()
     .append('rect')
-    .attr('x', (d) => xScale(d.totalprod))
-    .attr('y', (d) => yScale(d.pesticides))
+    .attr('x', (d)=>xScale(d.totalprod))
+    .attr('y', (d) => h- yScale(d.pesticides))
     .attr('width', 18)
-    .attr('height', (d) => xScale(d.totalprod))
+    .attr('height', (d) => yScale(d.pesticides))
     .attr('fill', (d) => colorScale(d.totalprod));
 
   xAxis = d3.axisBottom(xScale);
