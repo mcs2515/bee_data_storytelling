@@ -8,6 +8,14 @@ function rowConverter(row) {
   }
 }
 
+//b = new Map()
+//b.set('AL', Alabama);
+//b.get('AL');
+
+
+//var state_data = data.filter(function(d) {return d.stateInitials = 'AL'});
+
+
 let dataset;
 let xScale, yScale;
 let xAxis, yAxis;
