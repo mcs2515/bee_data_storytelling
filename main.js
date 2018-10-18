@@ -177,7 +177,7 @@ function changeDataset(value){
 
 //creates a map obj to make state abr. to name
 function createStateMap(){
-	stateMap.set('AL', 'Alabama');
+		stateMap.set('AL', 'Alabama');
   stateMap.set('AK', 'Alaska');
   stateMap.set('AZ', 'Arizona');
   stateMap.set('AR', 'Arkansas');
@@ -232,7 +232,7 @@ function createStateMap(){
 window.onload = function () {
 	
 	//set variables
-	let initials = "AL";
+	let initials = "KY";
 	state_select = d3.select('#stateSelect');
 	state_lbl = document.querySelector('#stateName');
 	tooltip = d3.select("body").append("div").attr('id', 'tooltip').style("opacity", 0);

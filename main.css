@@ -11,7 +11,7 @@ html, body {
 
 h1{
     width: 100%;
-    padding: 10px 0;
+    padding: 20px 0;
     margin: 0;
     text-align: center;
     background: #fecf67;
@@ -41,7 +41,42 @@ svg {
     display: block;
     margin: auto;
     padding: 20px;
-		box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+				box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+}
+
+.honeycombs{
+		position: fixed;
+		z-index: 0;
+}
+
+.honeysvg{
+		position: fixed;
+		width: auto;
+}
+
+.honeysvg.v1{
+		height: 300px;
+		top: 700px;
+		left: 100px;
+}
+
+.honeysvg.v2{
+		height: 200px;
+		top: 800px;
+		right: 100px;
+}
+
+.honeysvg.v3{
+		height: 120px;
+		top: 1100px;
+		left: 350px;
+}
+
+.honeysvg.v4{
+		height: 120px;
+		top: 1000px;
+		right: 350px;
+		transform: rotate(15deg);
 }
 
 #chart{
@@ -70,7 +105,7 @@ svg {
 }
 
 .y-grid line{
-		stroke: lightgrey;
+				stroke: lightgrey;
     stroke-opacity: 0.7;
     shape-rendering: crispEdges;
 }
@@ -84,8 +119,17 @@ svg {
 }
 
 .details{
-	height: 100%;
-	background: #fecf67; 
+		position: relative;
+		margin: 0 auto;
+		width: 950px;
+		height: 100%;
+		background: #fecf67;
+		opacity: .8;
+		z-index: 1;
+}
+
+.details p{
+		z-index: 0;
 }
 
 select{
