@@ -41,6 +41,7 @@ svg {
     display: block;
     margin: auto;
     padding: 20px;
+		box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
 }
 
 #chart{
@@ -66,6 +67,16 @@ svg {
 	text-anchor: start;
 	transform: rotate(65deg);
 */
+}
+
+.y-grid line{
+		stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+
+.y-grid path{
+		stroke-width: 0;
 }
 
 .dot-label {
