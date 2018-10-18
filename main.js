@@ -41,14 +41,11 @@ function makeChart(dataset) {
     .attr('width', w)
     .attr('height', h);
 	
-  //((graph width - 20) / length of  dataset) - padding
+  // ((graph width - rightMargin) / length of  dataset) - padding
   barWidth = ((w - rightMargin) / dataset.length) - 8; 
 
-  // our range is limited from 0 to width - 100, 
-  // which is for the 80 pixels on left for axis and 
-  // 20 pixels on right for padding
   xScale = d3.scaleLinear()
-		//adding 1 more year to the max so last rect doesn't go off x-axis
+    // adding 1 more year to the max so last rect doesn't go off x-axis
     .domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1])
     .rangeRound([leftMargin, w - rightMargin]);
 
@@ -60,8 +57,8 @@ function makeChart(dataset) {
   colorScale = d3.scaleLinear()
     .domain([0, d3.max(dataset, (d) => d.pesticides)])
     .range(['#fecf67', '#914420']);
-	
-		// Draw the horizontal grid lines
+  
+  // Draw the horizontal grid lines
   chart.append("g")
     .attr("class", "y-grid")
     .style("stroke-dasharray",("3,3"))
@@ -71,8 +68,8 @@ function makeChart(dataset) {
         .tickSize(-w)
         .tickFormat("")
     );
-
-	//rects
+  
+  // rects
   chart.selectAll('rect')
     .data(dataset, key)
     .enter()
@@ -86,9 +83,8 @@ function makeChart(dataset) {
     .attr('y', (d) => yScale(d.totalprod))
     .attr('value', (d) => d.totalprod)
     .attr('fill', (d) => colorScale(d.pesticides));
-	
-
-	// AXES
+  
+  // AXES
   xAxis = d3.axisBottom(xScale);
   xAxis.tickFormat(d3.format('d')).ticks(dataset.length);
 	
@@ -104,8 +100,8 @@ function makeChart(dataset) {
     .attr('class', 'axis-left')
     .attr('transform', `translate(70,0)`)
     .call(yAxis);
-	
-	// LABELS
+  
+  // LABELS
   chart.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", -(h-bottomMargin)/2)
@@ -128,13 +124,14 @@ function createHorizontalLines() {
 function updateChart(dataset) {
 
   let bars = chart.selectAll('rect').data(dataset, key);
+  
+  barWidth = ((w - rightMargin) / dataset.length) - 8;
 
   xScale.domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1]);
   yScale.domain([0, d3.max(dataset, (d) => d.totalprod)]);
   colorScale.domain([0, d3.max(dataset, (d) => d.pesticides)]);
 
-// 4. select rects, rebind with key, use transition to then
-// update x,y, and height of bars
+// select rects, rebind with key, use transitions for newly added rects and removed rects
   bars
     .enter()
       .append('rect')
@@ -158,8 +155,7 @@ function updateChart(dataset) {
     .style('opacity', 0)
     .remove();
 
-
-// After that, alway update xAxis scale, xAxisGroup with xAxis (call), and same for yAxis scale and yAxisGroup
+// after that, always update xAxis scale, xAxisGroup with xAxis (call), and same for yAxis scale and yAxisGroup
   xAxis.scale(xScale);
   xAxisGroup.transition('axis')
     .duration(1000)
@@ -172,29 +168,29 @@ function updateChart(dataset) {
 }
 
 function populateSelect(dataset){
-    //populate dropdown based on unique keys = no duplicates of stateInitials
-	state_select.selectAll("option")
-		.data(d3.map(dataset, function(d){return d.stateInitials;}).keys())
-		.enter()
-		.append("option")
-		.attr("value", function (d) {return d})
-		.text(function (d) {return d});
-	
-	state_select.on("change", function (d){
-		var value = d3.select(this).property("value");
-		changeDataset(value);
-	});
+  // populate dropdown based on unique keys = no duplicates of stateInitials
+  state_select.selectAll("option")
+      .data(d3.map(dataset, function(d){return d.stateInitials;}).keys())
+      .enter()
+      .append("option")
+      .attr("value", function (d) {return d})
+      .text(function (d) {return d});
+
+  state_select.on("change", function (d){
+      var value = d3.select(this).property("value");
+      changeDataset(value);
+  });
 }
 
 function changeDataset(value){
-	//set the state_lbl to full state name
-	state_lbl.innerHTML = stateMap.get(value);
-	
-	//get new dataset based on selected state
-	state_dataset = big_dataset.filter(function(d) {return d.stateInitials == value});
-	
-	//console.log(state_dataset);
-	updateChart(state_dataset);
+  //set the state_lbl to full state name
+  state_lbl.innerHTML = stateMap.get(value);
+  
+  //get new dataset based on selected state
+  state_dataset = big_dataset.filter(function(d) {return d.stateInitials == value});
+  
+  //console.log(state_dataset);
+  updateChart(state_dataset);
 }
 
 //creates a map obj to make state abr. to name
@@ -253,27 +249,26 @@ function createStateMap(){
 
 window.onload = function () {
 	
-	//set variables
-	let initials = "NY";
-	state_select = d3.select('#stateSelect');
-	state_lbl = document.querySelector('#stateName');
-	tooltip = d3.select("body").append("div").attr('id', 'tooltip').style("opacity", 0);
+  // set variables
+  let initials = "NY"; //MD??????
+  state_select = d3.select('#stateSelect');
+  state_lbl = document.querySelector('#stateName');
+  tooltip = d3.select("body").append("div").attr('id', 'tooltip').style("opacity", 0);
 	
-	//get the csv and call appropriate functions
+  //get the csv and call appropriate functions
   d3.csv('HoneyNeonic.csv', rowConverter)
     .then((d) => {
       big_dataset = d;
-			state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
-		
-			//set up the drop down selection
-			createStateMap();
-			populateSelect(big_dataset);
-			state_select.property("value", initials);
-		
-			//make chart once
-			makeChart(state_dataset);
-		
-			//
-			changeDataset(initials);
+      state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
+        // set up the drop down selection
+        createStateMap();
+        populateSelect(big_dataset);
+        state_select.property("value", initials);
+
+        // make chart once
+        makeChart(state_dataset);
+
+        //
+        changeDataset(initials);
     });
 }
