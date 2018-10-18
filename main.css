@@ -15,7 +15,10 @@ h1{
     margin: 0;
     text-align: center;
     background: #fecf67;
-    
+}
+
+h2{
+	margin: 0;
 }
 
 .chart-div {
@@ -25,21 +28,44 @@ h1{
     background: #f1f2f1;
 }
 
+#stateSection{
+	position: relative;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	width: 800px;
+	margin-top: 3em;
+}
+
 svg {
     display: block;
     margin: auto;
     padding: 20px;
 }
 
-.axis-left1 line, 
-.axis-left1 path {
+#chart{
+	background: #fcfcfc;
+	border-radius: 5px;
+	margin-top: 2em;
+	margin-bottom: 5em;
+}
+
+.axis-left line, 
+.axis-left path {
     stroke: none;
 }
 
-.axis-left1 text {
+.axis-left text {
     font-weight: bold;
     font-size: 7pt;
     text-transform: uppercase;
+}
+
+.axis-bottom text {
+/*
+	text-anchor: start;
+	transform: rotate(65deg);
+*/
 }
 
 .dot-label {
@@ -48,5 +74,15 @@ svg {
 
 .details{
 	height: 100%;
-	background: #fecf67;
+	background: #fecf67; 
+}
+
+select{
+	width: 55px;
+	height: 25px;
+	border-radius: 5px;
+	line-height: 27px;
+	vertical-align: middle;
+	padding-left: 5px;
+	margin-right: 20px;
 }
