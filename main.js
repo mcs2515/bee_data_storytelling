@@ -24,6 +24,7 @@ let barWidth;
 
 let key = (d) => d.totalprod;
 
+//Sets up scales, axes, graph demensions, and labels
 function makeChart(dataset) {
 	
   w = 900;
@@ -57,32 +58,6 @@ function makeChart(dataset) {
   colorScale = d3.scaleLinear()
     .domain([0, d3.max(dataset, (d) => d.pesticides)])
     .range(['#fecf67', '#914420']);
-  
-  // Draw the horizontal grid lines
-  chart.append("g")
-    .attr("class", "y-grid")
-    .style("stroke-dasharray",("3,3"))
-    .attr('transform', `translate(${leftMargin},0)`)
-    .call(
-      d3.axisLeft(yScale)
-        .tickSize(-w)
-        .tickFormat("")
-    );
-  
-  // rects
-  chart.selectAll('rect')
-    .data(dataset, key)
-    .enter()
-    .append('rect')
-    .attr('x', (d) => xScale(d.year))
-    .attr('y', h-bottomMargin)
-    .attr('width', barWidth)
-    .transition()
-    .duration(1500)
-    .attr('height', (d) => h - bottomMargin - yScale(d.totalprod))
-    .attr('y', (d) => yScale(d.totalprod))
-    .attr('value', (d) => d.totalprod)
-    .attr('fill', (d) => colorScale(d.pesticides));
   
   // AXES
   xAxis = d3.axisBottom(xScale);
@@ -124,22 +99,77 @@ function createHorizontalLines() {
 function updateChart(dataset) {
 
   let bars = chart.selectAll('rect').data(dataset, key);
+	let y_grid = chart.selectAll('.y-grid').data(dataset, key);
   
   barWidth = ((w - rightMargin) / dataset.length) - 8;
 
   xScale.domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1]);
   yScale.domain([0, d3.max(dataset, (d) => d.totalprod)]);
   colorScale.domain([0, d3.max(dataset, (d) => d.pesticides)]);
+	
+	//update y-axis grid line position
+	y_grid
+		.enter()
+			.data(dataset, key)
+			.append("g")
+			.attr("class", "y-grid")
+			.style("stroke-dasharray",("3,3"))
+			.attr('transform', `translate(${leftMargin},0)`)
+			.style('opacity', 0)
+		.merge(y_grid)
+			.transition()
+			.duration(3000)
+			.call(
+				d3.axisLeft(yScale)
+					.tickSize(-w)
+					.tickFormat("")
+			)
+			.style('opacity', 1);
+	
+	y_grid
+		.exit()
+			.transition()
+			.duration(1000)
+			.style('opacity', 0)
+			.remove();
 
 // select rects, rebind with key, use transitions for newly added rects and removed rects
   bars
-    .enter()
+		.enter()
       .append('rect')
       .attr('x', (d) => xScale(d.year))
       .attr('y', h - bottomMargin)
       .attr('width', barWidth)
       .attr('height', 0)
       .attr('value', (d) => d.totalprod)
+			.on('mouseover', function(d){
+																
+				d3.select(this)
+					.transition()
+					.duration(250)
+					.style('fill', 'green')
+					.style('cursor', 'pointer');
+		
+//				tooltip
+//						.transition()
+//						.duration(200)				
+//						.style("opacity", .7)
+//						.text("Slept hours: " + d.sleep)
+//						.style('left', (d3.event.pageX) + "px")
+//						.style('top', (d3.event.pageY) + "px");
+			})
+//			.on('mouseout', function(d){
+//					d3.select(this)
+//						.transition()
+//						.duration(250)
+//						.attr('fill', (d) => colorScale(d.pesticides));
+//
+////					tooltip
+////						.transition()
+////						.duration(500)				
+////						.style("opacity", 0);
+//
+//			})
     .merge(bars)
       .transition()
       .duration(1500)
@@ -156,13 +186,13 @@ function updateChart(dataset) {
     .remove();
 
 // after that, always update xAxis scale, xAxisGroup with xAxis (call), and same for yAxis scale and yAxisGroup
-  xAxis.scale(xScale);
-  xAxisGroup.transition('axis')
+  //xAxis.scale(xScale);
+  xAxisGroup.transition()
     .duration(1000)
     .call(xAxis);
 
-  yAxis.scale(yScale);
-  yAxisGroup.transition('axis')
+  //yAxis.scale(yScale);
+  yAxisGroup.transition()
     .duration(1000)
     .call(yAxis);
 }
@@ -170,15 +200,15 @@ function updateChart(dataset) {
 function populateSelect(dataset){
   // populate dropdown based on unique keys = no duplicates of stateInitials
   state_select.selectAll("option")
-      .data(d3.map(dataset, function(d){return d.stateInitials;}).keys())
-      .enter()
-      .append("option")
-      .attr("value", function (d) {return d})
-      .text(function (d) {return d});
+		.data(d3.map(dataset, function(d){return d.stateInitials;}).keys())
+		.enter()
+		.append("option")
+		.attr("value", function (d) {return d})
+		.text(function (d) {return d});
 
   state_select.on("change", function (d){
-      var value = d3.select(this).property("value");
-      changeDataset(value);
+		var value = d3.select(this).property("value");
+		changeDataset(value);
   });
 }
 
@@ -260,15 +290,15 @@ window.onload = function () {
     .then((d) => {
       big_dataset = d;
       state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
-        // set up the drop down selection
-        createStateMap();
-        populateSelect(big_dataset);
-        state_select.property("value", initials);
+			// set up the drop down selection
+			createStateMap();
+			populateSelect(big_dataset);
+			state_select.property("value", initials);
 
-        // make chart once
-        makeChart(state_dataset);
+			// make chart once
+			makeChart(state_dataset);
 
-        //
-        changeDataset(initials);
+			//
+			changeDataset(initials);
     });
 }
