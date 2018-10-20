@@ -1,4 +1,5 @@
 /* MAIN CSS FILE FOR PROJECT */
+@import url('https://fonts.googleapis.com/css?family=Roboto|Mali:400,500,600,700');
 
 html, body {
     width: 100%;
@@ -15,6 +16,8 @@ h1{
     margin: 0;
     text-align: center;
     background: #fecf67;
+		font-family: 'Mali', cursive;
+		font-size: 25pt;
 }
 
 h2{
@@ -28,20 +31,34 @@ h2{
     background: #f1f2f1;
 }
 
-#stateSection{
+
+.chart-div section{
+	display: flex;
+	flex-direction: column;
+}
+
+#stateName{
 	position: relative;
 	margin: 0 auto;
-	display: flex;
-	flex-direction: row;
-	width: 800px;
+	text-align: center;
+	width: 940px;
 	margin-top: 3em;
+	padding-top: 20px;
+	background-color: #fcfcfc;
+	border-radius: 5px 5px 0px 0px;
+	box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
 }
 
 svg {
-    display: block;
-    margin: auto;
-    padding: 20px;
-				box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+	display: block;
+	position: relative;
+	margin: 0 auto;
+	padding: 20px;
+	box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+	background: #fcfcfc;
+	border-radius: 0px 0px 5px 5px;
 }
 
 .honeycombs{
@@ -56,7 +73,7 @@ svg {
 
 .honeysvg.v1{
 		height: 300px;
-		top: 700px;
+		top: 780px;
 		left: 100px;
 }
 
@@ -78,14 +95,6 @@ svg {
 		right: 350px;
 		transform: rotate(15deg);
 }
-
-#chart{
-	background: #fcfcfc;
-	border-radius: 5px;
-	margin-top: 2em;
-	margin-bottom: 5em;
-}
-
 .axis-left line, 
 .axis-left path {
     stroke: none;
@@ -95,13 +104,16 @@ svg {
     font-weight: bold;
     font-size: 7pt;
     text-transform: uppercase;
+		letter-spacing: 1px;
 }
 
 .axis-bottom text {
-/*
-	text-anchor: start;
-	transform: rotate(65deg);
-*/
+	font-family: 'Roboto', sans-serif;
+	letter-spacing: 1px;
+}
+
+svg .labels{
+	font-family: 'Roboto', sans-serif;
 }
 
 .y-grid line{
@@ -132,12 +144,66 @@ svg {
 		z-index: 0;
 }
 
+#tooltip{
+	position: absolute;			
+	text-align: center;
+	background: black;
+	color:white;
+	border-radius: 3px;
+	padding: 10px 5px;
+	pointer-events: none;		
+}
+
+.chart-bottom{
+	position: relative;
+	margin: 0 auto;
+	display: flex;
+	flex: row;
+	width: 920px;
+	padding: 20px;
+	margin-bottom: 2em;
+	font-family: 'Roboto', sans-serif;
+}
+
 select{
-	width: 55px;
+	width: 60px;
 	height: 25px;
-	border-radius: 5px;
-	line-height: 27px;
-	vertical-align: middle;
+	border-radius: 3px;
 	padding-left: 5px;
-	margin-right: 20px;
+	margin-left: 20px;
+	margin-top: 15px;
+	overflow: scroll;
+	font-family: 'Roboto', sans-serif;
+}
+
+select:focus {outline:0;}
+
+.palettes{
+	display: flex;
+	flex-direction: row;
+	margin-left: 11em;
+	padding-top: 20px;
+}
+
+.palette{
+	width: 50px;
+	height: 15px;
+	border-radius: 1px;
+}
+
+.palettes p{
+	text-align: left;
+	margin: 0;
+	font-size: 10pt;
+	padding-left: 10px;
+	line-height: 15px;
+}
+
+.palette.low{
+	background: #fecf67;
+}
+
+.palette.high{
+	background: #914420;
+	margin-left: 40px;
 }

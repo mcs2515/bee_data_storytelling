@@ -4,7 +4,7 @@ function rowConverter(row) {
 		stateName:row.StateName,
 		totalprod: parseFloat(row.totalprod),
 		year: row.year,
-		pesticides: parseInt(row.nAllNeonic),
+		pesticides: parseFloat(row.nAllNeonic),
   }
 }
 
@@ -21,7 +21,7 @@ let w, h;
 let leftMargin, rightMargin, bottomMargin;
 let tooltip;
 let barWidth;
-let numLength, num;
+let numpow;
 
 let key = (d) => d.totalprod;
 
@@ -35,10 +35,9 @@ function makeChart(dataset) {
   rightMargin = 20;
   bottomMargin = 50;
   
-  numlength = d3.max(dataset, (d) => d.totalprod).toString().length; //get lengh of number
-  num = Math.pow(10,numlength-1);
-  console.log(num);
-  
+  //get lengh of number to get 10^(numlength-1)
+  numpow = Math.pow(10,d3.max(dataset, (d) => d.totalprod).toString().length-1);
+
   // sort the data by downloads
   // uses built-in Array.sort() with comparator function
   //dataset.sort((a,b) => b.totalprod - a.totalprod);
@@ -56,7 +55,7 @@ function makeChart(dataset) {
     .rangeRound([leftMargin, w - rightMargin]);
 
   yScale = d3.scaleLinear()
-    .domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/num) * num])
+    .domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/numpow) * numpow])
     .rangeRound([h-bottomMargin, 20]);
 
   // d3 allows scaling between colors
@@ -83,6 +82,7 @@ function makeChart(dataset) {
   
   // LABELS
   chart.append("text")
+		.attr("class", "labels")
     .attr("transform", "rotate(-90)")
     .attr("x", -(h-bottomMargin)/2)
     .attr("y", 20)
@@ -90,6 +90,7 @@ function makeChart(dataset) {
     .text("Total Production (lbs)");
 	
   chart.append("text")
+		.attr("class", "labels")
     .attr("x", h)
     .attr("y", (w/2))
     .style("text-anchor", "middle")
@@ -106,42 +107,41 @@ function updateChart(dataset) {
   let bars = chart.selectAll('rect').data(dataset, key);
   let y_grid = chart.selectAll('.y-grid').data(dataset, key);
   
+	// ((graph width - rightMargin) / length of  dataset) - padding
   barWidth = ((w - rightMargin) / dataset.length) - 8;
-  numlength = d3.max(dataset, (d) => d.totalprod).toString().length;
-  num = Math.pow(10,numlength-1);
-
-  console.log(d3.max(dataset, (d) => d.totalprod));
-  console.log(numlength);
-  
+	
+  //get lengh of number to get 10^(numlength-1)
+	numpow = Math.pow(10,d3.max(dataset, (d) => d.totalprod).toString().length-1);
+	
   xScale.domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1]);
-  yScale.domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/num) * num]);
+  yScale.domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/numpow) * numpow]);
   colorScale.domain([0, d3.max(dataset, (d) => d.pesticides)]);
 	
   //update y-axis grid line position
   y_grid
     .enter()
-        .data(dataset, key)
-        .append("g")
-        .attr("class", "y-grid")
-        .style("stroke-dasharray",("3,3"))
-        .attr('transform', `translate(${leftMargin},0)`)
-        .style('opacity', 0)
+			.data(dataset, key)
+			.append("g")
+			.attr("class", "y-grid")
+			.style("stroke-dasharray",("3,3"))
+			.attr('transform', `translate(${leftMargin},0)`)
+			.style('opacity', 0)
     .merge(y_grid)
-        .transition()
-        .duration(3000)
-        .call(
-            d3.axisLeft(yScale)
-              .tickSize(-w)
-              .tickFormat("")
-        )
-        .style('opacity', 1);
+			.transition("grid")
+			.duration(3000)
+			.call(
+				d3.axisLeft(yScale)
+					.tickSize(-w)
+					.tickFormat("")
+			)
+			.style('opacity', .4);
 
   y_grid
     .exit()
-        .transition()
-        .duration(1000)
-        .style('opacity', 0)
-        .remove();
+			.transition("grid")
+			.duration(1000)
+			.style('opacity', 0)
+			.remove();
 
 // select rects, rebind with key, use transitions for newly added rects and removed rects
   bars
@@ -160,13 +160,13 @@ function updateChart(dataset) {
 					.style('fill', 'green')
 					.style('cursor', 'pointer');
 		
-//				tooltip
-//						.transition()
-//						.duration(200)				
-//						.style("opacity", .7)
-//						.text("Slept hours: " + d.sleep)
-//						.style('left', (d3.event.pageX) + "px")
-//						.style('top', (d3.event.pageY) + "px");
+				tooltip
+					.style('left', (d3.event.pageX) + "px")
+					.style('top', (d3.event.pageY) + "px")
+					.text("Pesticides: " + Math.ceil(d.pesticides).toLocaleString() + " (kg)")
+					.transition("tooltip")
+					.duration(200)				
+					.style("opacity", .8);
 			})
 			.on('mouseout', function(d){
 					d3.select(this)
@@ -174,14 +174,13 @@ function updateChart(dataset) {
 						.duration(250)
 						.style('fill', (d) => colorScale(d.pesticides));
 
-//					tooltip
-//						.transition()
-//						.duration(500)				
-//						.style("opacity", 0);
-
-		})
+					tooltip
+						.transition("tooltip")
+						.duration(500)				
+						.style("opacity", 0);
+			})
     .merge(bars)
-      .transition()
+      .transition("bars")
       .duration(1500)
       .attr('height', (d) => h - bottomMargin - yScale(d.totalprod))
       .attr('y', (d) => yScale(d.totalprod))
@@ -190,7 +189,7 @@ function updateChart(dataset) {
   // change opacity when bars leave
   bars
     .exit()
-    .transition()
+    .transition("bars")
     .duration(1000)
     .style('opacity', 0)
     .remove();
@@ -290,7 +289,7 @@ function createStateMap(){
 window.onload = function () {
 	
   // set variables
-  let initials = "MD"; //MD??????
+  let initials = "MD";
   state_select = d3.select('#stateSelect');
   state_lbl = document.querySelector('#stateName');
   tooltip = d3.select("body").append("div").attr('id', 'tooltip').style("opacity", 0);
