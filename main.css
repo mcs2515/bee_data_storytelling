@@ -18,10 +18,17 @@ h1{
     background: #fecf67;
 		font-family: 'Mali', cursive;
 		font-size: 25pt;
+		font-weight: 500;
 }
 
 h2{
 	margin: 0;
+}
+
+h3{
+	font-weight: 500;
+	font-size: 20pt;
+	font-family: 'Mali', cursive;
 }
 
 .chart-div {
@@ -61,13 +68,8 @@ svg {
 	border-radius: 0px 0px 5px 5px;
 }
 
-.honeycombs{
-		position: fixed;
-		z-index: 0;
-}
-
 .honeysvg{
-		position: fixed;
+		position: absolute;
 		width: auto;
 }
 
@@ -86,13 +88,13 @@ svg {
 .honeysvg.v3{
 		height: 120px;
 		top: 1100px;
-		left: 350px;
+		left: 150px;
 }
 
 .honeysvg.v4{
 		height: 120px;
-		top: 1000px;
-		right: 350px;
+		top: 1200px;
+		right: 250px;
 		transform: rotate(15deg);
 }
 .axis-left line, 
@@ -137,11 +139,13 @@ svg .labels{
 		height: 100%;
 		background: #fecf67;
 		opacity: .8;
-		z-index: 1;
+		z-index: 1;;
+		padding-top: 1em;
+		padding-bottom: 3em;
 }
 
 .details p{
-		z-index: 0;
+		z-index: 0
 }
 
 #tooltip{
@@ -151,7 +155,10 @@ svg .labels{
 	color:white;
 	border-radius: 3px;
 	padding: 10px 5px;
-	pointer-events: none;		
+	pointer-events: none;
+	font-family: 'Roboto', sans-serif;
+	letter-spacing: 1px;
+	font-size: 10pt;
 }
 
 .chart-bottom{

@@ -46,18 +46,15 @@ function makeChart(dataset) {
   chart = d3.select('#chart')
     .attr('width', w)
     .attr('height', h);
-	
-  // ((graph width - rightMargin) / length of  dataset) - padding
-  barWidth = ((w - rightMargin) / dataset.length) - 8;
 
   xScale = d3.scaleLinear()
     // adding 1 more year to the max so last rect doesn't go off x-axis
     .domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1])
-    .rangeRound([leftMargin, w - rightMargin]);
+    .range([leftMargin, w - rightMargin]);
 
   yScale = d3.scaleLinear()
     .domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/numpow) * numpow])
-    .rangeRound([h-bottomMargin, 20]);
+    .range([h-bottomMargin, 20]);
 
   // d3 allows scaling between colors
   colorScale = d3.scaleLinear()
@@ -109,7 +106,8 @@ function updateChart(dataset) {
   let y_grid = chart.selectAll('.y-grid').data(dataset, key);
   
 	// ((graph width - rightMargin) / length of  dataset) - padding
-  barWidth = ((w - rightMargin) / dataset.length) - 8;
+  //barWidth = ((w - rightMargin) / dataset.length) - 8;
+	barWidth = 30;
 	
   //get lengh of number to get 10^(numlength-1)
 	numpow = Math.pow(10,d3.max(dataset, (d) => d.totalprod).toString().length-1);
@@ -158,7 +156,7 @@ function updateChart(dataset) {
 				d3.select(this)
 					.transition("fill")
 					.duration(250)
-					.style('fill', 'green')
+					.style('fill', '#2f5c33')
 					.style('cursor', 'pointer');
 		
 				tooltip
@@ -205,6 +203,10 @@ function updateChart(dataset) {
   yAxisGroup.transition("axis")
     .duration(1000)
     .call(yAxis);
+	
+	//remove the x-axis so that it draws ontop of everything
+	xAxisGroup.remove();
+  chart.node().appendChild(xAxisGroup.node());
 }
 
 function populateSelect(dataset){
