@@ -11,6 +11,7 @@ function rowConverter(row) {
 let stateMap = new Map();
 let state_lbl;
 let state_select;
+let state_initials = [];
 
 let big_dataset, state_dataset;
 let xScale, yScale, colorScale;
@@ -47,7 +48,7 @@ function makeChart(dataset) {
     .attr('height', h);
 	
   // ((graph width - rightMargin) / length of  dataset) - padding
-  barWidth = ((w - rightMargin) / dataset.length) - 8; 
+  barWidth = ((w - rightMargin) / dataset.length) - 8;
 
   xScale = d3.scaleLinear()
     // adding 1 more year to the max so last rect doesn't go off x-axis
@@ -234,6 +235,7 @@ function changeDataset(value){
 
 //creates a map obj to make state abr. to name
 function createStateMap(){
+	//push states to array map
   stateMap.set('AL', 'Alabama');
   stateMap.set('AK', 'Alaska');
   stateMap.set('AZ', 'Arizona');
@@ -284,12 +286,17 @@ function createStateMap(){
   stateMap.set('WV', 'West Virginia');
   stateMap.set('WI', 'Wisconsin');
   stateMap.set('WY', 'Wyoming');
+	
+	//push key to another array
+	for (var [key, value] of stateMap) {
+		state_initials.push(key);
+	}
 }
+
 
 window.onload = function () {
 	
   // set variables
-  let initials = "MD";
   state_select = d3.select('#stateSelect');
   state_lbl = document.querySelector('#stateName');
   tooltip = d3.select("body").append("div").attr('id', 'tooltip').style("opacity", 0);
@@ -297,17 +304,21 @@ window.onload = function () {
   //get the csv and call appropriate functions
   d3.csv('HoneyNeonic.csv', rowConverter)
     .then((d) => {
-      big_dataset = d;
-      state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
+      	big_dataset = d;
+		
         // set up the drop down selection
         createStateMap();
         populateSelect(big_dataset);
+		
+				// choose random state to start with
+				var initials = state_initials[Math.floor(Math.random() * state_initials.length)];
+      	state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
         state_select.property("value", initials);
 
-        // make chart once
+        // make base chart once
         makeChart(state_dataset);
 
-        //
+        // add the visuals to chart
         changeDataset(initials);
     });
 }
