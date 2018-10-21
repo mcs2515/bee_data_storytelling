@@ -3,7 +3,7 @@ function rowConverter(row) {
 		stateInitials:row.state,
 		stateName:row.StateName,
 		totalprod: parseFloat(row.totalprod),
-		year: row.year,
+		year: parseInt(row.year),
 		pesticides: parseFloat(row.nAllNeonic),
   }
 }
@@ -48,8 +48,7 @@ function makeChart(dataset) {
     .attr('height', h);
 
   xScale = d3.scaleLinear()
-    // adding 1 more year to the max so last rect doesn't go off x-axis
-    .domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1])
+    .domain([d3.min(dataset, (d) => d.year), d3.max(dataset, (d) => d.year)])
     .range([leftMargin, w - rightMargin]);
 
   yScale = d3.scaleLinear()
@@ -63,7 +62,8 @@ function makeChart(dataset) {
   
   // AXES
   xAxis = d3.axisBottom(xScale);
-  xAxis.tickFormat(d3.format('d')).ticks(dataset.length);
+	// adding 1 more year to the max so last rect doesn't go off x-axis
+  xAxis.tickFormat(d3.format('d')).ticks(dataset.length+1);
 	
   yAxis = d3.axisLeft(yScale);
   yAxis.tickFormat(d3.format(".2s"));
@@ -112,7 +112,7 @@ function updateChart(dataset) {
   //get lengh of number to get 10^(numlength-1)
 	numpow = Math.pow(10,d3.max(dataset, (d) => d.totalprod).toString().length-1);
 	
-  xScale.domain([d3.min(dataset, (d) => d.year), Number(d3.max(dataset, (d) => d.year)) + 1]);
+  xScale.domain([d3.min(dataset, (d) => d.year), d3.max(dataset, (d) => d.year)]);
   yScale.domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/numpow) * numpow]);
   colorScale.domain([0, d3.max(dataset, (d) => d.pesticides)]);
 	
@@ -193,7 +193,8 @@ function updateChart(dataset) {
     .style('opacity', 0)
     .remove();
 
-// after that, always update xAxis scale, xAxisGroup with xAxis (call), and same for yAxis scale and yAxisGroup
+	// after that, always update xAxis scale, xAxisGroup with xAxis (call), 
+	// and same for yAxis scale and yAxisGroup
   //xAxis.scale(xScale);
   xAxisGroup.transition("axis")
     .duration(1000)
@@ -204,7 +205,7 @@ function updateChart(dataset) {
     .duration(1000)
     .call(yAxis);
 	
-	//remove the x-axis so that it draws ontop of everything
+	// remove the x-axis so that it redraws ontop of everything
 	xAxisGroup.remove();
   chart.node().appendChild(xAxisGroup.node());
 }
@@ -218,10 +219,17 @@ function populateSelect(dataset){
     .attr("value", function (d) {return d})
     .text(function (d) {return d});
 
+	//select change event
   state_select.on("change", function (d){
     var value = d3.select(this).property("value");
     changeDataset(value);
   });
+	
+		let options = document.querySelector('#stateSelect');
+	//push states that only exist in dataset to another array
+	for (var i = 0; i < options.length; i++) {
+		state_initials.push(options[i].value);
+	}
 }
 
 function changeDataset(value){
@@ -238,6 +246,7 @@ function changeDataset(value){
 //creates a map obj to make state abr. to name
 function createStateMap(){
 	//push states to array map
+	//some of these states arn't listed in dataset!
   stateMap.set('AL', 'Alabama');
   stateMap.set('AK', 'Alaska');
   stateMap.set('AZ', 'Arizona');
@@ -288,11 +297,6 @@ function createStateMap(){
   stateMap.set('WV', 'West Virginia');
   stateMap.set('WI', 'Wisconsin');
   stateMap.set('WY', 'Wyoming');
-	
-	//push key to another array
-	for (var [key, value] of stateMap) {
-		state_initials.push(key);
-	}
 }
 
 
@@ -316,11 +320,11 @@ window.onload = function () {
 				var initials = state_initials[Math.floor(Math.random() * state_initials.length)];
       	state_dataset = big_dataset.filter(function(d) {return d.stateInitials == initials});
         state_select.property("value", initials);
-
-        // make base chart once
+		
+				//make base chart once
         makeChart(state_dataset);
 
-        // add the visuals to chart
+        //add the visuals to chart
         changeDataset(initials);
     });
 }
