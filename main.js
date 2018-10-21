@@ -24,7 +24,7 @@ let tooltip;
 let barWidth;
 let numpow;
 
-let key = (d) => d.totalprod;
+let key = (d) => d.stateInitials;
 
 //Sets up scales, axes, graph demensions, and labels
 function makeChart(dataset) {
@@ -47,8 +47,9 @@ function makeChart(dataset) {
     .attr('width', w)
     .attr('height', h);
 
-  xScale = d3.scaleLinear()
-    .domain([d3.min(dataset, (d) => d.year), d3.max(dataset, (d) => d.year)])
+  xScale = d3.scaleTime()
+		// adding 1 more year to the max & min so last rect doesn't go off x-axis
+    .domain([Number(d3.min(dataset, (d) => d.year))-1, Number(d3.max(dataset, (d) => d.year))+1])
     .range([leftMargin, w - rightMargin]);
 
   yScale = d3.scaleLinear()
@@ -62,8 +63,7 @@ function makeChart(dataset) {
   
   // AXES
   xAxis = d3.axisBottom(xScale);
-	// adding 1 more year to the max so last rect doesn't go off x-axis
-  xAxis.tickFormat(d3.format('d')).ticks(dataset.length+1);
+  xAxis.tickFormat(d3.format('d')).ticks(dataset.length);
 	
   yAxis = d3.axisLeft(yScale);
   yAxis.tickFormat(d3.format(".2s"));
@@ -112,7 +112,8 @@ function updateChart(dataset) {
   //get lengh of number to get 10^(numlength-1)
 	numpow = Math.pow(10,d3.max(dataset, (d) => d.totalprod).toString().length-1);
 	
-  xScale.domain([d3.min(dataset, (d) => d.year), d3.max(dataset, (d) => d.year)]);
+	// adding 1 more year to the max & min so last rect doesn't go off x-axis
+  xScale.domain([Number(d3.min(dataset, (d) => d.year))-1, Number(d3.max(dataset, (d) => d.year))+1]);
   yScale.domain([0, Math.ceil(d3.max(dataset, (d) => d.totalprod)/numpow) * numpow]);
   colorScale.domain([0, d3.max(dataset, (d) => d.pesticides)]);
 	
@@ -127,13 +128,13 @@ function updateChart(dataset) {
 			.style('opacity', 0)
     .merge(y_grid)
 			.transition("grid")
-			.duration(3000)
+			.duration(2000)
 			.call(
 				d3.axisLeft(yScale)
 					.tickSize(-w)
 					.tickFormat("")
 			)
-			.style('opacity', .4);
+			.style('opacity', 1);
 
   y_grid
     .exit()
@@ -150,6 +151,7 @@ function updateChart(dataset) {
       .attr('y', h - bottomMargin)
       .attr('width', barWidth)
       .attr('height', 0)
+			.attr('transform', `translate(${-barWidth/2},0)`)
       .attr('value', (d) => d.totalprod)
 			.on('mouseover', function(d){
 																
