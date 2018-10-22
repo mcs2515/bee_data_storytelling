@@ -10,25 +10,37 @@ html, body {
     background: #fecf67;
 }
 
-h1{
-    width: 100%;
-    padding: 20px 0;
-    margin: 0;
+.title-wrapper{
     text-align: center;
+}
+
+.title{
+    display: inline-flex;
+}
+
+.title img{
+    width: auto;
+    height: 30px;
+    padding-top: 20px;
+    border: none;
+}
+
+.title img:first-child{
+    transform: scaleX(-1);
+}
+
+.title h1{
+    color: #3f3f3f;
+    padding: 22px 40px;
+    margin: 0;
     background: #fecf67;
-		font-family: 'Mali', cursive;
-		font-size: 25pt;
-		font-weight: 500;
+    font-family: 'Mali', cursive;
+    font-size: 25pt;
+    font-weight: 500;
 }
 
 h2{
-	margin: 0;
-}
-
-h3{
-	font-weight: 500;
-	font-size: 20pt;
-	font-family: 'Mali', cursive;
+    margin: 0;
 }
 
 .chart-div {
@@ -38,64 +50,63 @@ h3{
     background: #f1f2f1;
 }
 
-
 .chart-div section{
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #stateName{
-	position: relative;
-	margin: 0 auto;
-	text-align: center;
-	width: 940px;
-	margin-top: 3em;
-	padding-top: 20px;
-	background-color: #fcfcfc;
-	border-radius: 5px 5px 0px 0px;
-	box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+    width: 940px;
+    margin-top: 3em;
+    padding-top: 20px;
+    background-color: #fcfcfc;
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
 }
 
 svg {
-	display: block;
-	position: relative;
-	margin: 0 auto;
-	padding: 20px;
-	box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
-	background: #fcfcfc;
-	border-radius: 0px 0px 5px 5px;
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+    background: #fcfcfc;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .honeysvg{
-		position: absolute;
-		width: auto;
+    position: absolute;
+    width: auto;
 }
 
 .honeysvg.v1{
-		height: 300px;
-		top: 780px;
-		left: 100px;
+    height: 300px;
+    top: 780px;
+    left: 100px;
 }
 
 .honeysvg.v2{
-		height: 200px;
-		top: 800px;
-		right: 100px;
+    height: 200px;
+    top: 800px;
+    right: 100px;
 }
 
 .honeysvg.v3{
-		height: 120px;
-		top: 1100px;
-		left: 150px;
+    height: 120px;
+    top: 1100px;
+    left: 150px;
 }
 
 .honeysvg.v4{
-		height: 120px;
-		top: 1200px;
-		right: 250px;
-		transform: rotate(15deg);
+    height: 120px;
+    top: 1200px;
+    right: 250px;
+    transform: rotate(15deg);
 }
 .axis-left line, 
 .axis-left path {
@@ -106,111 +117,152 @@ svg {
     font-weight: bold;
     font-size: 7pt;
     text-transform: uppercase;
-		letter-spacing: 1px;
+    letter-spacing: 1px;
 }
 
 .axis-bottom text {
-	font-family: 'Roboto', sans-serif;
-	letter-spacing: 1px;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
 }
 
 svg .labels{
-	font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .y-grid line{
-		stroke: lightgrey;
+    stroke: lightgrey;
     stroke-opacity: 0.7;
     shape-rendering: crispEdges;
 }
 
 .y-grid path{
-		stroke-width: 0;
+    stroke-width: 0;
 }
 
 .dot-label {
     font-size: 8pt;
 }
 
+
+.header{
+    display: inline-flex;
+    width: 100%;
+}
+
+.header h3{
+    color: #3f3f3f;
+    font-weight: 500;
+    font-size: 20pt;
+    font-family: 'Mali', cursive;
+    background: #FEB83F;
+    padding: 15px 20px;
+    margin: 0;
+    margin-bottom: 1.5em;
+    width: 100%;
+}
+
+.header img{
+    width: auto;
+    height: 30px;
+    padding-top: 13px;
+    padding-bottom: 14px;
+    padding-right: 20px;
+    background: #FEB83F;
+    border: none;
+}
+
 .details{
-		position: relative;
-		margin: 0 auto;
-		width: 950px;
-		height: 100%;
-		background: #fecf67;
-		opacity: .8;
-		z-index: 1;;
-		padding-top: 1em;
-		padding-bottom: 3em;
+    position: relative;
+    margin: 0 auto;
+    width: 950px;
+    height: 100%;
+    background: #f1f2f1;
+    z-index: 1;
+    margin-top: 4em;
+    margin-bottom: 3em;
+    padding-bottom: 2em;
 }
 
 .details p{
-		z-index: 0
+    color: #5b5b5b;
+    z-index: 0;
+    padding: 0px 20px;
+}
+
+.details a{
+    font-weight: bolder;
+    color: #914420;
+    text-decoration: none;
+}
+
+.details a:hover{
+    text-decoration: underline;
 }
 
 #tooltip{
-	position: absolute;			
-	text-align: center;
-	background: black;
-	color:white;
-	border-radius: 3px;
-	padding: 10px 5px;
-	pointer-events: none;
-	font-family: 'Roboto', sans-serif;
-	letter-spacing: 1px;
-	font-size: 10pt;
+    position: absolute;			
+    text-align: center;
+    background: black;
+    color:white;
+    border-radius: 3px;
+    padding: 10px 5px;
+    pointer-events: none;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    font-size: 10pt;
 }
 
 .chart-bottom{
-	position: relative;
-	margin: 0 auto;
-	display: flex;
-	flex: row;
-	width: 920px;
-	padding: 20px;
-	margin-bottom: 2em;
-	font-family: 'Roboto', sans-serif;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    flex: row;
+    width: 920px;
+    padding: 20px;
+    margin-bottom: 2em;
+    font-family: 'Roboto', sans-serif;
+    color: #3f3f3f;
 }
 
 select{
-	width: 60px;
-	height: 25px;
-	border-radius: 3px;
-	padding-left: 5px;
-	margin-left: 20px;
-	margin-top: 15px;
-	overflow: scroll;
-	font-family: 'Roboto', sans-serif;
+    width: 60px;
+    height: 25px;
+    border-radius: 3px;
+    padding-left: 5px;
+    margin-left: 20px;
+    margin-top: 15px;
+    color: #3f3f3f;
+    font-family: 'Roboto', sans-serif;
 }
 
 select:focus {outline:0;}
 
 .palettes{
-	display: flex;
-	flex-direction: row;
-	margin-left: 11em;
-	padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 11em;
+    padding-top: 20px;
 }
 
 .palette{
-	width: 50px;
-	height: 15px;
-	border-radius: 1px;
+    width: 50px;
+    height: 15px;
+    border-radius: 1px;
 }
 
 .palettes p{
-	text-align: left;
-	margin: 0;
-	font-size: 10pt;
-	padding-left: 10px;
-	line-height: 15px;
+    text-align: left;
+    margin: 0;
+    font-size: 10pt;
+    padding-left: 10px;
+    line-height: 15px;
 }
 
 .palette.low{
-	background: #fecf67;
+    background: #fecf67;
 }
 
 .palette.high{
-	background: #914420;
-	margin-left: 40px;
+    background: #914420;
+    margin-left: 40px;
 }

@@ -8,49 +8,52 @@
   </head>
 
   <body>
-      <main>
-        <section>
-          <h1>Not the Bees!</h1>
-
-          <div class='chart-div'>
-						<div class="chart-wrap">
-							<h2 id='stateName'></h2>
-							<section>
-								<svg id='chart'></svg>
-								<div class ="chart-bottom">
-									<p>Select State:</p>
-									<select id='stateSelect'></select>
-									<div class= "palettes">
-										<div class = "palette low"> </div>
-										<p> Lower amounts of pesticides used</p>
-										<div class = "palette high"> </div>
-										<p> Higher amounts of pesticides used</p>
-									</div>
+		<main>
+			<section>
+				<div class= "title-wrapper">
+					<div class='title'>
+						<img class= "bee" src="media/bee.png"/>
+						<h1>Not the Bees!</h1><img class= "bee" src="media/bee.png"/>
+					</div>
+				</div>
+					
+				<div class='chart-div'>
+						<h2 id='stateName'></h2>
+						<section>
+							<svg id='chart'></svg>
+							<div class ="chart-bottom">
+								<p>Select State:</p>
+								<select id='stateSelect'></select>
+								<div class= "palettes">
+									<div class = "palette low"> </div>
+									<p> Lower amounts of pesticides used</p>
+									<div class = "palette high"> </div>
+									<p> Higher amounts of pesticides used</p>
 								</div>
-							</section>
-						</div>
-          </div>
-						
-          <div class='details'>
-            <h3>Story:</h3>
-						
-							<p>The graph here shows the dataset about bees. Bees are an essential species for pollenization and food production. There has been noticable alarms about the declining production of bees. One can wonder if pesticides are a factor of the declining production of bees.</p>
-							
-							<p>The graph above shows the production of bees and the use of pesticides in each state. The color of the bars determines the amount of pesticies used during that year while the height of each bar represents the total amount of honey produced each year in that state.</p>
-						
-							<p>In several states the total production of honey per year has been greater than the years where the use of pesticides were high. The story here tells the viewer that pesticides has a negatice effect on the total production of honey in these states.</p>
-						
-							<p>Another story can also be seen from the graphs. Looking at the data from several of the listed states, all of them started to increase their use of pesticides around the same years. These years are between 2011 and 2014. After 2014, however, the states starts to reduce the use of pesticides. The results of this action has slowly increased the states' total production of honey. </p>
-          </div>
+							</div>
+						</section>
+				</div>
 
-        </section>
-        <div class= "honeycombs">
-          <img class= "honeysvg v1" src="media/honeycomb.svg"/>
-          <img class= "honeysvg v2" src="media/honeycomb2.svg"/>
-          <img class= "honeysvg v3" src="media/honeycomb3.svg"/>
-          <img class= "honeysvg v4" src="media/honeycomb3.svg"/>
-        </div>
-    </main>
-  <script src='./main.js'></script>
-  </body>
+				<div class='details'>
+					<div class="header"><h3>The Story:</h3><img class= "bee" src="media/bee.png"/></div>
+
+					<p>Bees are an essential species for pollenization and food production. There has been noticable alarms about the declining production of bees. One can wonder if pesticides are a factor of the declining production of bees.</p>
+
+					<p>The graph above is from a <a href="https://www.kaggle.com/kevinzmith/honey-with-neonic-pesticide/home" target="_blank">dataset</a> that shows the production of bees and the use of pesticides in each state. The color of the bars determines the amount of pesticies used during that year while the height of each bar represents the total amount of honey produced each year in that state.</p>
+
+					<p>In several states the total production of honey per year has been greater than the years where the use of pesticides were high. The story here tells the viewer that pesticides has a negatice effect on the total production of honey in these states.</p>
+
+					<p>Another story can also be seen from the graphs. Looking at the data from several of the listed states, all of them started to increase their use of pesticides around the same years. These years are between 2011 and 2014. After 2014, however, the states starts to reduce the use of pesticides. The results of this action has slowly increased the states' total production of honey. </p>
+				</div>
+
+			</section>
+			<div class= "honeycombs">
+				<img class= "honeysvg v1" src="media/honeycomb.svg"/>
+				<img class= "honeysvg v2" src="media/honeycomb2.svg"/>
+				<img class= "honeysvg v3" src="media/honeycomb3.svg"/>
+				<img class= "honeysvg v4" src="media/honeycomb3.svg"/>
+			</div>
+		</main>
+		<script src='./main.js'></script>
+	</body>
 </html>
